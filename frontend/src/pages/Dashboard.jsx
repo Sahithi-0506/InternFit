@@ -11,20 +11,31 @@ function Dashboard() {
     description: "",
   });
 
-  const student = JSON.parse(localStorage.getItem("student"));
-
-  useEffect(() => {
-    fetchInternships();
-  }, []);
+  // Safely parse student object
+  let student = {};
+  try {
+    student = JSON.parse(localStorage.getItem("student")) || {};
+  } catch {
+    student = {};
+  }
 
   const fetchInternships = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/internships/all");
-      setInternships(res.data);
+      setInternships(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.log(error);
+      setInternships([]);
     }
   };
+
+  useEffect(() => {
+    // Don't call async function directly in useEffect
+    const fetchData = async () => {
+      await fetchInternships();
+    };
+    fetchData();
+  }, []);
 
   const verifyExternal = async () => {
     try {
@@ -36,7 +47,7 @@ function Dashboard() {
       alert(
         `Status: ${res.data.verification_status}\nScore: ${res.data.final_score}\n${res.data.message}`
       );
-    } catch (error) {
+    } catch {
       alert("Verification failed");
     }
   };
@@ -51,9 +62,7 @@ function Dashboard() {
     <div className="min-h-screen bg-slate-100">
       <nav className="bg-white shadow px-8 py-5 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-green-700">INTERN FIT</h1>
-        <p className="text-gray-600">
-          Welcome, {student?.name || "User"}
-        </p>
+        <p className="text-gray-600">Welcome, {student?.name || "User"}</p>
       </nav>
 
       <div className="p-8">
@@ -63,10 +72,17 @@ function Dashboard() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-            {["internship_url", "company_email", "website_url", "linkedin_url"].map((field) => (
+            {[
+              "internship_url",
+              "company_email",
+              "website_url",
+              "linkedin_url",
+            ].map((field) => (
               <input
                 key={field}
-                placeholder={field.replace("_", " ")}
+                name={field}
+                placeholder={field.replaceAll("_", " ")}
+                value={urlData[field]}
                 onChange={(e) =>
                   setUrlData({ ...urlData, [field]: e.target.value })
                 }
@@ -77,6 +93,7 @@ function Dashboard() {
 
           <textarea
             placeholder="Internship description"
+            value={urlData.description}
             onChange={(e) =>
               setUrlData({ ...urlData, description: e.target.value })
             }
@@ -96,14 +113,21 @@ function Dashboard() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {internships.map((intern) => (
-            <div key={intern.internship_id} className="bg-white p-6 rounded-2xl shadow">
+          {(internships || []).map((intern) => (
+            <div
+              key={intern.internship_id}
+              className="bg-white p-6 rounded-2xl shadow"
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-bold text-gray-800">
                   {intern.role}
                 </h3>
 
-                <span className={`px-3 py-1 rounded-full text-sm ${badgeColor(intern.verification_status)}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm ${badgeColor(
+                    intern.verification_status
+                  )}`}
+                >
                   {intern.verification_status}
                 </span>
               </div>
