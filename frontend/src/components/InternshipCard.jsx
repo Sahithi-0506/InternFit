@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function InternshipCard({ internship, onMatch }) {
+function InternshipCard({ internship, onMatch, onReviews }) {
   const navigate = useNavigate();
 
   const statusColor = {
@@ -22,7 +22,10 @@ function InternshipCard({ internship, onMatch }) {
           <h3 className="text-xl font-bold text-gray-800">
             {internship.role}
           </h3>
-          <p className="mt-1 text-gray-600">{internship.company_name}</p>
+
+          <p className="mt-1 text-gray-600">
+            {internship.company_name}
+          </p>
         </div>
 
         <span
@@ -36,11 +39,26 @@ function InternshipCard({ internship, onMatch }) {
       </div>
 
       <div className="mt-4 text-sm text-gray-600 space-y-2">
-        <p><b>Duration:</b> {internship.duration}</p>
-        <p><b>Mode:</b> {internship.mode}</p>
-        <p><b>Stipend:</b> ₹{internship.stipend}</p>
-        <p><b>Skills:</b> {internship.required_skills}</p>
-        <p><b>Verification Score:</b> {internship.verification_score}/100</p>
+        <p>
+          <b>Duration:</b> {internship.duration}
+        </p>
+
+        <p>
+          <b>Mode:</b> {internship.mode}
+        </p>
+
+        <p>
+          <b>Stipend:</b> ₹{internship.stipend}
+        </p>
+
+        <p>
+          <b>Skills:</b> {internship.required_skills}
+        </p>
+
+        <p>
+          <b>Verification Score:</b>{" "}
+          {internship.verification_score}/100
+        </p>
       </div>
 
       <button
@@ -48,6 +66,13 @@ function InternshipCard({ internship, onMatch }) {
         className="mt-5 w-full py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
       >
         Check Match
+      </button>
+
+      <button
+        onClick={() => onReviews(internship.internship_id)}
+        className="mt-3 w-full py-3 rounded-xl bg-purple-600 text-white hover:bg-purple-700"
+      >
+        Check Alumni Reviews
       </button>
 
       <button

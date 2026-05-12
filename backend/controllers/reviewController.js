@@ -4,18 +4,18 @@ exports.addReview = (req, res) => {
   const {
     alumni_id,
     internship_id,
-    rating,
-    learning_quality,
-    work_pressure,
-    certificate_value,
-    stipend_reality,
-    comments,
+    company_name,
+    role,
+    review_text,
+    interview_questions,
+    preparation_tips,
+    is_genuine,
   } = req.body;
 
   const sql = `
     INSERT INTO reviews
-    (alumni_id, internship_id, rating, learning_quality, work_pressure,
-     certificate_value, stipend_reality, comments)
+    (alumni_id, internship_id, company_name, role, review_text,
+     interview_questions, preparation_tips, is_genuine)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
@@ -24,12 +24,12 @@ exports.addReview = (req, res) => {
     [
       alumni_id,
       internship_id,
-      rating,
-      learning_quality,
-      work_pressure,
-      certificate_value,
-      stipend_reality,
-      comments,
+      company_name,
+      role,
+      review_text,
+      interview_questions,
+      preparation_tips,
+      is_genuine,
     ],
     (err) => {
       if (err) {
@@ -54,7 +54,7 @@ exports.getReviewsByInternship = (req, res) => {
     FROM reviews r
     JOIN alumni a ON r.alumni_id = a.alumni_id
     WHERE r.internship_id = ?
-    ORDER BY r.created_at DESC
+    ORDER BY r.review_id DESC
   `;
 
   db.query(sql, [internship_id], (err, result) => {
