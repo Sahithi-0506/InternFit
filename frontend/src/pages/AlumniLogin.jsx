@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { loginAlumni } from "../services/authService";
 
 function AlumniLogin() {
   const navigate = useNavigate();
@@ -18,14 +18,14 @@ function AlumniLogin() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/alumni/login", form);
+      const res = await loginAlumni(form);
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userType", "alumni");
       localStorage.setItem("alumni", JSON.stringify(res.data.alumni));
 
       alert("Login successful");
-      navigate("/dashboard");
+      navigate("/alumni-dashboard");
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     }
