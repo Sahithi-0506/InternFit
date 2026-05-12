@@ -177,8 +177,6 @@ Import all required tables.
 
 ![alt text](image-1.png)
 
-![alt text](image-2.png)
-
 ![alt text](image-3.png)
 
 
@@ -221,7 +219,7 @@ Import all required tables.
 
 ---
 
-# 👩‍💻 Team Members
+# 👩‍💻 Author
 
 ### Sahithi Achyutha Ishwarya Kalla
 - Frontend & Backend Development
