@@ -11,9 +11,7 @@ function StudentRegister() {
     password: "",
     year_of_study: "",
     branch: "",
-    skills: "",
-    projects: "",
-    interests: "",
+    
   });
 
   const handleChange = (e) => {
@@ -42,10 +40,7 @@ function StudentRegister() {
         <Input name="password" type="password" placeholder="Password" onChange={handleChange} />
         <Input name="year_of_study" placeholder="Year of Study" onChange={handleChange} />
         <Input name="branch" placeholder="Branch" onChange={handleChange} />
-        <Input name="skills" placeholder="Skills e.g. HTML,CSS,JavaScript" onChange={handleChange} />
-        <Input name="projects" placeholder="Projects" onChange={handleChange} />
-        <Input name="interests" placeholder="Interests" onChange={handleChange} />
-
+        
         <button className="w-full mt-5 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700">
           Register
         </button>
